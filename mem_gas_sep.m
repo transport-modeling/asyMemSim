@@ -44,8 +44,8 @@ function [G]=mem_gas_sep(z,W)
     pf_o2 = P*C_o2/C_T;
     pf_n2 = P*C_n2/C_T; 
 %flux across membrane
-    J_o2 = (Pm(1,1)/(R_o-r_i))*(pf_o2-ps);
-    J_n2 = (Pm(1,2)/(R_o-r_i))*(pf_n2-ps); 
+    J_o2 = (Pm(2,1)/(R_o-r_i))*(pf_o2-ps);
+    J_n2 = (Pm(2,2)/(R_o-r_i))*(pf_n2-ps); 
 %volumetric_flow
     g3 = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+((Q^2*pho)+pi()*r_i^2*mu*4/3)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325))));
     %g3 = 0;
