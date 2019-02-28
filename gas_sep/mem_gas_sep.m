@@ -1,12 +1,13 @@
 function [G]=mem_gas_sep(z,W)    
     %gas membrane simulation 
-    %applied solution_diffusion model with dense membrane
+    %applied solution_diffusion model with dense polymer membrane
+    %bundle of ~2450 hollow fibers
     
 %declare differential variables
     C_o2 = W(1); %mol/L
     C_n2 = W(2); %mol/L
     Q = W(3);    %L/hr
-%test polymers permabillity vector
+%various polymer permabillity vector
     pm_o2 = [7600;638;30;16.8;11.2;7.9;1.38;3.1;1.4]*0.000000122198; %convert units from Barrer to mol*M/M^2*hr*bar (STP)
     pm_n2 = [5400;320;7.1;3.8;3.3;1.3;0.239;0.46;0.18]*0.000000122138;
     Pm = [pm_o2,pm_n2];
@@ -24,18 +25,20 @@ function [G]=mem_gas_sep(z,W)
     pf_o2 = P*C_o2/C_T;
     pf_n2 = P*C_n2/C_T; 
 %flux across membrane
-    J_o2 = (Pm(3,1)/(R_o-r_i))*(pf_o2-ps);
-    J_n2 = (Pm(3,2)/(R_o-r_i))*(pf_n2-ps); 
+    J_o2 = (Pm(1,1)/(R_o-r_i))*(pf_o2-ps);
+    J_n2 = (Pm(1,2)/(R_o-r_i))*(pf_n2-ps); 
 %volumetric_flow
-    g3 = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+((Q^2*pho)+pi()*r_i^2*mu*4/3)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325))));
-    %g3 = 0; 
+    %%[dQ]/[dz] for constant pressure along membrane (d[C_T]/d[z]=0)
+    %g3 = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
+    %%[dQ]/[dz] accounting for pressure drop ([dC_T]/[dz]=(1/R*T)*d[P]/d[z])    
+    dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+((-1*Q^2*pho)+Q*pi()*r_i^2*mu*4/3)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325)))); %converts Pa to bar, s to hr, and m^3 to L
 %mass_balence on spiral wound unit
     %[dC_o2]/[dz] =
-    g1 = (-C_o2*g3-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
+    dC_o2 = (-C_o2*dQ-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
     %[dC_n2]/[dz] =
-    g2 = (-C_n2*g3-2*pi()*r_i*J_n2)/Q; %nitrogen concentration change across single fiber
+    dC_n2 = (-C_n2*dQ-2*pi()*r_i*J_n2)/Q; %nitrogen concentration change across single fiber
 %differential vector  
-    G=[g1;g2;g3]; 
+    G=[dC_o2;dC_n2;dQ]; 
     
 %%GENERAL NOTES%%
     

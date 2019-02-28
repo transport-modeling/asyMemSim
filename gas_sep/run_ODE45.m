@@ -1,6 +1,6 @@
 function [P] = run_ODE45(  )
  %ode45 solver
-zspan=[0 10];
+zspan=[0 1.5]; %meter
 W0=[0.042378;0.159423;0.4158]; %based on concentraion of air at 5 bar, and Q = [L/hr] but # based on 0.01ft/s through 2450-fibre bundle
 
 [z,W_s]=ode45(@(z,W) mem_gas_sep(z,W),zspan,W0);
