@@ -17,7 +17,7 @@ function [G]=mem_gas_sep(z,W)
     R_o = 0.00025; %meter
     T = 298; %Lord Kelvin
     R = 0.083144621; %L bar/mol K
-    pho = 1.0184; %kg/m^3 at 1 bar
+    rho = 1.0184; %kg/m^3 at 1 bar
     mu = 1.81*10^-5; %kg/m*s  at 1 bar and 25 deg C
 %define total conc. and partial pressures
     C_T = C_o2+C_n2; %~~.2 mol/L at 5 bar
@@ -29,9 +29,9 @@ function [G]=mem_gas_sep(z,W)
     J_n2 = (Pm(1,2)/(R_o-r_i))*(pf_n2-ps); 
 %volumetric_flow
     %%[dQ]/[dz] for constant pressure along membrane (d[C_T]/d[z]=0)
-    %g3 = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
+    %dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
     %%[dQ]/[dz] accounting for pressure drop ([dC_T]/[dz]=(1/R*T)*d[P]/d[z])    
-    dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+((-1*Q^2*pho)+Q*pi()*r_i^2*mu*4/3)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325)))); %converts Pa to bar, s to hr, and m^3 to L
+    dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+(-1*Q^2*rho)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325)))); %converts Pa to bar, s to hr, and m^3 to L
 %mass_balence on spiral wound unit
     %[dC_o2]/[dz] =
     dC_o2 = (-C_o2*dQ-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
