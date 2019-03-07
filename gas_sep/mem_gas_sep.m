@@ -8,8 +8,8 @@ function [G]=mem_gas_sep(z,W)
     C_n2 = W(2); %mol/L
     Q = W(3);    %L/hr
 %various polymer permabillity vector
-    pm_o2 = [7600;638;30;16.8;11.2;7.9;1.38;3.1;1.4]*0.000000122198; %convert units from Barrer to mol*M/M^2*hr*bar (STP)
-    pm_n2 = [5400;320;7.1;3.8;3.3;1.3;0.239;0.46;0.18]*0.000000122138;
+    pm_o2 = [7600;1000;638;30;16.8;11.2;7.9;1.38;3.1;1.4]*0.000000122198; %convert units from Barrer to mol*M/M^2*hr*bar (STP)
+    pm_n2 = [5400;600;320;7.1;3.8;3.3;1.3;0.239;0.46;0.18]*0.000000122138;
     Pm = [pm_o2,pm_n2];
 %define constants
     ps = 0; %bar
@@ -25,8 +25,8 @@ function [G]=mem_gas_sep(z,W)
     pf_o2 = P*C_o2/C_T;
     pf_n2 = P*C_n2/C_T; 
 %flux across membrane
-    J_o2 = (Pm(1,1)/(R_o-r_i))*(pf_o2-ps);
-    J_n2 = (Pm(1,2)/(R_o-r_i))*(pf_n2-ps); 
+    J_o2 = (Pm(2,1)/(R_o-r_i))*(pf_o2-ps);
+    J_n2 = (Pm(2,2)/(R_o-r_i))*(pf_n2-ps); 
 %volumetric_flow
     %%[dQ]/[dz] for constant pressure along membrane (d[C_T]/d[z]=0)
     %dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
@@ -50,7 +50,8 @@ function [G]=mem_gas_sep(z,W)
                                         %Perm
         %Test cases (dense polymers):  (Barrer)  Selec
                                       % O2   N2  tivety     
-    % Poly(1-trimethylsilyl-1-propyne) 7600 5400 1.6           /NOTE ABOUT
+    % Poly(1-trimethylsilyl-1-propyne) 7600 5400 1.6
+    % Polydimethylsiloxane (PDMS)      1000 600   1.7                   /NOTE ABOUT
     % Poly(dimethylsiloxane)           638  320   2            /STRUCT:
     % Poly(4-methyl-1-pentene)          30  7.1  4.2           /CREATING_OBJS_
     % Poly(phenylene oxide)           16.8  3.8  4.4           /params.pres
@@ -59,3 +60,7 @@ function [G]=mem_gas_sep(z,W)
     % Polysulfone                     1.38 0.239 5.8            /organization
     % Polyaramid                        3.1 0.46 6.8            /of pieces
     % Tetrabromo bis polycarbonate      1.4 0.18 7.8
+    
+    %chaning the volumetric flowrate has no effect on the performace. Which
+    %makes sense since the membrane area, permeabillity, and driving force
+    %if what affects the separation.
