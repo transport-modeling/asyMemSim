@@ -8,6 +8,7 @@ function [G]=mem_gas_sep(z,W)
     C_n2 = W(2); %mol/L
     Q = W(3);    %L/hr
     dQ = W(4);
+    P = W(5);  %Pa
 %various polymer permabillity vector
     pm_o2 = [7600;1000;638;30;16.8;11.2;7.9;1.38;3.1;1.4]*0.000000122198; %convert units from Barrer to mol*M/M^2*hr*bar (STP)
     pm_n2 = [5400;600;320;7.1;3.8;3.3;1.3;0.239;0.46;0.18]*0.000000122138;
@@ -32,16 +33,17 @@ function [G]=mem_gas_sep(z,W)
     %%[dQ]/[dz] for constant pressure along membrane (d[C_T]/d[z]=0)
     %dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
     %%[dQ]/[dz] accounting for pressure drop ([dC_T]/[dz]=(1/R*T)*d[P]/d[z])    
-%    dQ_1 = -2*pi()*r_i*(J_n2+J_o2)/(C_T*(1+(-1*Q^2*rho)/(C_T*R*pi()^2*r_i^4*T)*(1/(3600*1000*101325)))); %converts Pa to bar, s to hr, and m^3 to L
      dQ_1 = dQ;
-     dQ_2 = (-C_T*R*T*pi()*r_i^2/(mu*Q)-rho*Q/mu)*dQ-2*pi()*r_i*(J_n2+J_o2)*R*T*pi()*r_i^2/(mu*Q);
+     dQ_2 = (-C_T*R*T*pi()*r_i^2/(mu*Q)+rho*Q/mu)*dQ_1-2*pi()*r_i*(J_n2+J_o2)*R*T*pi()*r_i^2/(mu*Q);
 %mass_balence on spiral wound unit
     %[dC_o2]/[dz] =
-    dC_o2 = (-C_o2*dQ_1-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
+    dC_o2 = (-C_o2*dQ-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
     %[dC_n2]/[dz] =
-    dC_n2 = (-C_n2*dQ_1-2*pi()*r_i*J_n2)/Q; %nitrogen concentration change across single fiber
-%differential vector  
-    G=[dC_o2;dC_n2;dQ_1;dQ_2]; 
+    dC_n2 = (-C_n2*dQ-2*pi()*r_i*J_n2)/Q; %nitrogen concentration change across single fiber
+%NS derived delta P (to test vs. Mass Balance deriverd del P for sanity check
+    dP = mu/(pi()*r_i^2)*dQ_2-rho*Q*dQ_1/(pi()*r_i^2);
+%differential vector
+    G=[dC_o2;dC_n2;dQ_1;dQ_2;dP]; 
     
 %%GENERAL NOTES%%
     
