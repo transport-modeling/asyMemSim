@@ -23,9 +23,9 @@ function [G]=mem_gas_sep(z,W)
     mu = 1.81*10^-5; %kg/m*s  at 1 bar and 25 deg C
 %define total conc. and partial pressures
     C_T = C_o2+C_n2; %~~.2 mol/L at 5 bar
-    P = R*T*C_T; %assuming IG law
-    pf_o2 = P*C_o2/C_T;
-    pf_n2 = P*C_n2/C_T; 
+    P_T = R*T*C_T; %assuming IG law
+    pf_o2 = P_T*C_o2/C_T;
+    pf_n2 = P_T*C_n2/C_T; 
 %flux across membrane
     J_o2 = (Pm(2,1)/(R_o-r_i))*(pf_o2-ps);
     J_n2 = (Pm(2,2)/(R_o-r_i))*(pf_n2-ps); 
