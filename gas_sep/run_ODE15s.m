@@ -22,7 +22,7 @@ xlabel("Membrane Length (m)");
 ylabel("N2 Flow Rate (mol/hr)");
 figure(3)
 plot(z,P2,'b--O');
-title("Pressure Drop Across Fiber Bore");
+title("Pressure Drop Across Fiber Bore - P = RT(C_O_2+C_N_2)");
 xlabel("Membrane Length (m)");
 ylabel("Pressure (bar)");
 figure(4)
@@ -32,9 +32,9 @@ xlabel("Membrane Length (m)");
 ylabel("Volumetric Flow Rate (L/hr)");
 figure(5)
 plot(z,P4,'-O','Color',[0.9290, 0.6940, 0.1250]);
-title("Volumetric Flow Rate Through Fiber Bundle");
+title("Pressure Drop Across Fiber Bore - dP/dz");
 xlabel("Membrane Length (m)");
-ylabel("Volumetric Flow Rate (L/hr)");
+ylabel("Pressure (bar)");
 
 
 end

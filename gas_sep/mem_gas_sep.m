@@ -19,7 +19,6 @@ function [G]=mem_gas_sep(z,W)
     R_o = 0.00025; %meter
     T = 298; %Lord Kelvin
     R = 0.083144621; %L bar/mol K
-    rho = 1.0184; %kg/m^3 at 1 bar
     mu = 1.81*10^-5; %kg/m*s  at 1 bar and 25 deg C
 %define total conc. and partial pressures
     C_T = C_o2+C_n2; %~~.2 mol/L at 5 bar
@@ -34,14 +33,14 @@ function [G]=mem_gas_sep(z,W)
     %dQ = -2*pi()*r_i*(J_n2+J_o2)/(C_T);   
     %%[dQ]/[dz] accounting for pressure drop ([dC_T]/[dz]=(1/R*T)*d[P]/d[z])    
      dQ_1 = dQ;
-     dQ_2 = (-C_T*R*T*pi()*r_i^2/(mu*Q)+rho*Q/mu)*dQ_1-2*pi()*r_i*(J_n2+J_o2)*R*T*pi()*r_i^2/(mu*Q);
+     dQ_2 = (-C_T*R*T*pi()*r_i^2/(mu*Q)+(C_o2*16*2+C_n2*14*2)*Q/(mu*pi()*r_i^2))*dQ_1-2*pi()*r_i*(J_n2+J_o2)*R*T*pi()*r_i^2/(mu*Q);
 %mass_balence on spiral wound unit
     %[dC_o2]/[dz] =
     dC_o2 = (-C_o2*dQ-2*pi()*r_i*J_o2)/Q; %oxygen concentration change across single fiber
     %[dC_n2]/[dz] =
     dC_n2 = (-C_n2*dQ-2*pi()*r_i*J_n2)/Q; %nitrogen concentration change across single fiber
 %NS derived delta P (to test vs. Mass Balance deriverd del P for sanity check
-    dP = mu/(pi()*r_i^2)*dQ_2-rho*Q*dQ_1/(pi()*r_i^2);
+    dP = mu/(pi()*r_i^2)*dQ_2-(C_o2*16*2+C_n2*14*2)*Q*dQ_1/(pi()*r_i^2)^2;
 %differential vector
     G=[dC_o2;dC_n2;dQ_1;dQ_2;dP]; 
     
