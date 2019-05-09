@@ -56,14 +56,14 @@ function [G]=mem_gas_sep(z,W)
         %Test cases (dense polymers):  (Barrer)  Selec
                                       % O2   N2  tivety     
     % Poly(1-trimethylsilyl-1-propyne) 7600 5400 1.6
-    % Polydimethylsiloxane (PDMS)      1000 600   1.7                   /NOTE ABOUT
-    % Poly(dimethylsiloxane)           638  320   2            /STRUCT:
+    % Polydimethylsiloxane (PDMS)      1000 600  1.7           /NOTE ABOUT
+    % Poly(dimethylsiloxane)           638  320  2.0           /STRUCT:
     % Poly(4-methyl-1-pentene)          30  7.1  4.2           /CREATING_OBJS_
     % Poly(phenylene oxide)           16.8  3.8  4.4           /params.pres
     % Ethyl cellulose                 11.2  3.3  3.4           /params.feed
-    % 6FDA-DAF (polyimide)             7.9  1.3  6.2            /like chess
-    % Polysulfone                     1.38 0.239 5.8            /organization
-    % Polyaramid                        3.1 0.46 6.8            /of pieces
+    % 6FDA-DAF (polyimide)             7.9  1.3  6.2           /like chess
+    % Polysulfone                      1.38 0.24 5.8           /organization
+    % Polyaramid                        3.1 0.46 6.8           /of pieces
     % Tetrabromo bis polycarbonate      1.4 0.18 7.8
     
     %chaning the volumetric flowrate has no effect on the performace. Which
