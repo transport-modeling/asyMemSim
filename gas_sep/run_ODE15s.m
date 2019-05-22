@@ -1,7 +1,8 @@
 function [P] = run_ODE15s(  )
  %ode15s solver
-zspan=[0 1]; %meter
-W0=[0.042378;0.159423;0.4158;0;5]; %based on concentraion of air at 5 bar, and Q = [L/hr] but # based on 0.01ft/s through 2450-fibre bundle
+zspan=[0 0.3]; %meter
+%W0=[0.042378;0.159423;0.4158;0;5]; %based on concentraion of air at 5 bar, and Q = [L/hr] but # based on 0.01ft/s through 2450-fibre bundle
+W0=[0.042378;0.159423;0.4158;5];
 
 [z,W_s]=ode15s(@(z,W) mem_gas_sep(z,W),zspan,W0);
 
@@ -9,7 +10,7 @@ P = 2450.*W_s(:,1).*W_s(:,3); %o2
 P1 = 2450.*W_s(:,2).*W_s(:,3); %n2
 P2 = 0.08314*298.*(W_s(:,1)+W_s(:,2)); %delta P
 P3 = 2450*(W_s(:,3)); %volumetric flow rate
-P4 = (W_s(:,5)); %volumetric flow rate
+P4 = (W_s(:,4)); %pressure
 figure(1)
 plot(z,P,'r*');
 title("Oxygen Flow Rate Through Fiber Bundle");
