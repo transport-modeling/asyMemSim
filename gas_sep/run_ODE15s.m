@@ -1,9 +1,9 @@
 function [P] = run_ODE15s(  )
  %ode15s solver
-zspan=[0 0.3]; %meter
+zspan=[0 1]; %meter
 %W0=[0.042378;0.159423;0.4158;0;5]; %based on concentraion of air at 5 bar, and Q = [L/hr] but # based on 0.01ft/s through 2450-fibre bundle
-W0=[0.042378;0.159423;0.4158;5];
-
+%W0=[0.042378*10;0.159423*10;0.4158*50;50]; %50 bar 
+W0=[0.042378;0.159423;0.4158;5]; %5 bar 
 [z,W_s]=ode15s(@(z,W) mem_gas_sep(z,W),zspan,W0);
 
 P = 2450.*W_s(:,1).*W_s(:,3); %o2
